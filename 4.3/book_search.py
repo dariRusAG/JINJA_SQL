@@ -73,10 +73,6 @@ genre_choice = (1, 2, 3)
 author_choice = (2, 3, 4, 5)
 publisher_choice = None
 
-# genre_choice = None
-# author_choice = None
-# publisher_choice = None
-
 genre_view, author_view, publisher_view = check_view(genre_choice, author_choice, publisher_choice)
 
 list_view = [genre_view, author_view, publisher_view]

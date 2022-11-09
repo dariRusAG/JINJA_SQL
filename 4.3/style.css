@@ -39,7 +39,7 @@ img {
     padding: 14px 14px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     margin-left: 16%;
 }
 
@@ -51,7 +51,7 @@ img {
     box-shadow: 0 0 0 4px #968089, 2px 1px 6px 4px rgba(150, 128, 137, 0.5); /* смещение, размер и цвет тени рамки*/
     color: #fff;
     margin: 15px;
-    width: 24%;
+    width: 250px;
 }
 
 input {
