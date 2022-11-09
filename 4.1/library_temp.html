@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title> Дамп базы данных </title>
+    <link rel="stylesheet" href="style.css">
+    {% macro render_table(table_name, relation) %}
+    <div class="cell">
+        <p>
+            <b>{{table_name}}</b>
+        </p>
+        {% set n = len(relation) %}
+        <table>
+            <tr>
+                {% for name in relation.dtypes.index %}
+                <th>{{name}}</th>
+                {% endfor %}
+            </tr>
+            <tbody>
+
+            {% for i in range(n) %}
+            <tr>
+                {% for name in relation.dtypes.index %}
+                <td> {{ relation.loc[i, name] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endmacro %}
+</head>
+<body>
+    {% for name, data in zip(list_table, list_relation) %}
+    {{ render_table(name, data) }}
+    {% endfor %}
+</body>
+</html>

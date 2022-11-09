@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title> Карточка читателя </title>
+    <link rel="stylesheet" href="style.css">
+    {% macro render_table(table_name, relation) %}
+    <div class="cell">
+        <p>
+            <b>
+                Карточка читателя: {{ combo_box.loc[table_name - 1, "reader_name"] }}
+            </b>
+        </p>
+        {% set n = len(relation) %}
+        <table>
+            <tr>
+                {% for name in relation.dtypes.index %}
+                <th>{{name}}</th>
+                {% endfor %}
+            </tr>
+            <tbody>
+
+            {% for i in range(n) %}
+            <tr>
+                {% for name in relation.dtypes.index %}
+                <td>
+                    {% if relation.loc[i, name] == None %}
+                    <button>Сдать</button>
+                    {% else %}
+                    {{ relation.loc[i, name] }}
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endmacro %}
+
+    {% macro render_form(combo_box, reader_id) %}
+    <form>
+        <p>Читатель:
+            <!-- Создаем поле со списком -->
+            <select name="reader">
+                {% set n = len(combo_box) %}
+                <!-- формируем строки списка (каждое значение поля reader_name - строка списка) в виде
+                <option [selected] value = код_читателя> ФИО </option> -->
+                {% for i in range(n) %}
+                {% set id_r = combo_box.loc[i, "reader_id"] %}
+                <!-- атрибут value элемента будет совпадать с id читателя -->
+                {% if id_r == reader_id %}
+                <!-- если код читателя из таблицы совпадает с кодом
+                текущего читателя устанавливаем атрибут selected -->
+                <option selected value={{id_r}}>
+                    {% else %}
+                <option value={{id_r}}>
+                    {% endif %}
+                    {{ combo_box.loc[i, "reader_name"] }}
+                </option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Найти">
+        </p>
+    </form>
+    {% endmacro %}
+</head>
+<body>
+{{ render_form(combo_box, reader_id) }}
+{{ render_table(reader_id, book_reader) }}
+</body>
+</html>

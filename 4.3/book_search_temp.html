@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск книг</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!--Макрос генерации формы выбора-->
+    {% macro render_form(data, title, choice) %}
+    <img src="../arrow.png" alt="" width="14" height="auto">
+    {{ title }}
+    {% set n = len(data) %}
+    {% for i in range(n) %}
+    <p>
+        {% if data.loc[i, "id"] in choice %}
+        <input type="checkbox" checked>
+        {{ data.loc[i, "Название"] }}
+        ({{ data.loc[i, "Количество_экземпляров"] }})
+        {% else %}
+        <input type="checkbox">
+        {{ data.loc[i, "Название"] }}
+        ({{ data.loc[i, "Количество_экземпляров"] }})
+        {% endif %}
+    </p>
+    {% endfor %}
+    {% endmacro %}
+
+    <!--Макрос генерации информации о выбранных категориях-->
+    {% macro render_info(data, title, choice) %}
+    {% if choice != (0, 0) %}
+    <b>{{ title }}:</b>
+    {% endif %}
+    {% set n = len(data) %}
+    {% for i in range(n) %}
+    {% if data.loc[i, "id"] in choice %}
+    {{ data.loc[i, "Название"] }};
+    {% endif %}
+    {% endfor %}
+    {% endmacro %}
+
+    <!--Макрос генерации найденных книг-->
+    {% macro render_books(books) %}
+    {% set columns = books.columns %}
+    {% set n = len(books) %}
+    {% for i in range(n) %}
+    <div class="block">
+        {% for j in range(len(columns)) %}
+        <p>{{ columns[j] }}:
+            <b>
+                {{ books.loc[i, columns[j]] }}
+            </b>
+        </p>
+        {% endfor %}
+        <div class="select">
+            <input type="button" value="Выбрать">
+        </div>
+    </div>
+    {% endfor %}
+    {% endmacro %}
+
+</head>
+<body>
+<div class="catalog">
+    <div class="block_choice">
+        {% for df, name_df, view in zip(combo_box, name_box, list_view) %}
+        {{ render_form(df, name_df, view) }}
+        {% endfor %}
+        <a class="gradient-button">Найти</a>
+        <a class="gradient-button">Очистить</a>
+    </div>
+
+    <div class="block_output">
+        <div class="info">
+            {% for df, name_df, choice in zip(combo_box, name_box, list_view) %}
+            {{ render_info(df, name_df, choice) }}
+            {% endfor %}
+        </div>
+        {{ render_books(books) }}
+    </div>
+
+</div>
+</body>
+</html>
