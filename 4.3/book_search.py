@@ -22,15 +22,15 @@ def check_choice(genre, author, publisher):
     if publisher is None:
         publisher = tuple(book_search_model.get_publisher_id(conn)["publisher_id"])
 
-    if 9 in author and 8 not in author:
-        author += (8, )
-    elif 8 in author and 9 not in author:
-        author += (9, )
-
-    if 4 in author and 5 not in author:
-        author += (5, )
-    elif 5 in author and 4 not in author:
-        author += (4, )
+    # if 9 in author and 8 not in author:
+    #     author += (8, )
+    # elif 8 in author and 9 not in author:
+    #     author += (9, )
+    #
+    # if 4 in author and 5 not in author:
+    #     author += (5, )
+    # elif 5 in author and 4 not in author:
+    #     author += (4, )
 
     return genre, author, publisher
 
@@ -70,7 +70,7 @@ list_df = [df_genre, df_author, df_publisher]
 list_name_df = ["Жанр", "Автор", "Издательство"]
 
 genre_choice = (1, 2, 3)
-author_choice = (2, 3, 4, 5)
+author_choice = (2, 3, 4)
 publisher_choice = None
 
 genre_view, author_view, publisher_view = check_view(genre_choice, author_choice, publisher_choice)

@@ -42,13 +42,14 @@ def get_publisher(conn):
 
 def books_output(genre, author, publisher, conn):
     return pd.read_sql(f'''
-        SELECT 
-        title AS Название,
-        GROUP_CONCAT(author_name) AS Авторы,
-        genre_name AS Жанр, 
-        publisher_name AS Издательство,
-        year_publication AS Год_издания,
-        available_numbers AS Количество
+    WITH author_books AS (
+        SELECT
+            book_id,
+            title AS Название,
+            genre_name AS Жанр, 
+            publisher_name AS Издательство,
+            year_publication AS Год_издания,
+            available_numbers AS Количество
         FROM book
         JOIN publisher USING (publisher_id)
         JOIN book_author USING (book_id)
@@ -58,8 +59,19 @@ def books_output(genre, author, publisher, conn):
             AND author_id in {author}
             AND publisher_id in {publisher}
         GROUP BY book_id
-        ORDER BY Название
-        ''', conn)
+        )
+    SELECT 
+        Название, 
+        GROUP_CONCAT(author_name) AS Авторы, 
+        Жанр, 
+        Издательство, 
+        Год_издания, 
+        Количество
+    FROM author_books
+    JOIN book_author USING (book_id)
+    JOIN author USING (author_id)
+    GROUP BY Название
+    ''', conn)
 
 
 def get_genre_id(conn):
